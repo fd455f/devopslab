@@ -43,17 +43,11 @@ jobs:
       needs: [UnitTest,SonarCloud ]
       name: Build
       runs-on: ubuntu-latest
+      steps: 
       
-      steps:    
-
       - name: Checkout Repo
         uses: actions/checkout@v2
-  
-     - name: New Relic License Add
-        run: |
-          sed -i "s/licensekey/${{ secrets.NEW_RELIC_LICENSE_KEY }}/g" Dockerfile
 
-        
       - name: Login to Heroku Container registry
         env: 
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
