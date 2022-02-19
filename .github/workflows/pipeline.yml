@@ -43,7 +43,12 @@ jobs:
       needs: [UnitTest,SonarCloud ]
       name: Build
       runs-on: ubuntu-latest
+      
       steps:    
+
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        
       - name: Login to Heroku Container registry
         env: 
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
