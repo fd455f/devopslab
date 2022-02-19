@@ -48,6 +48,11 @@ jobs:
 
       - name: Checkout Repo
         uses: actions/checkout@v2
+  
+     - name: New Relic License Add
+        run: |
+          sed -i "s/licensekey/${{ secrets.NEW_RELIC_LICENSE_KEY }}/g" Dockerfile
+
         
       - name: Login to Heroku Container registry
         env: 
