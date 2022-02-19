@@ -8,7 +8,7 @@ on:
       - main
 
 jobs:
-  Build:
+  UnitTest:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,12 +26,30 @@ jobs:
       - name: Unit Test
         run: python -m unittest -v test
 
+  SonarCloud:
+      name: SonarCloud
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+          with:
+            fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+        - name: SonarCloud Scan
+          uses: SonarSource/sonarcloud-github-action@master
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+            SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  Build:
+      needs: [UnitTest,SonarCloud ]
+      name: Build
+      runs-on: ubuntu-latest
+      steps:    
       - name: Login to Heroku Container registry
         env: 
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:login
 
-      - name: Build and Push
+      - name: Docker Image & Push Heroku Registry
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
         run: heroku container:push -a ${{ secrets.HEROKU_APP_NAME }} web
