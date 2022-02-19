@@ -11,14 +11,6 @@ def pagina_inicial():
     return "Hello World: Rafael Ronchi"
 
   
-@app.route('/bug')                                                                                                                                
-def bad():                                                                                                                                        
-    try:                                                                                                                                          
-        raise TypeError()                                                                                                                         
-    except TypeError as e:                                                                                                                        
-        print(e)                                                                                                                                  
-    except TypeError as e:                                                                                                                        
-        print("Duplicado, ou seja, nunca vai entrar aqui.")    
 
 
 if __name__ == '__main__':
